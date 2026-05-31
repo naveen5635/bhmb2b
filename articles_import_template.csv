@@ -1,0 +1,6 @@
+articleNumber,name,pcsPerCarton,pricePerPcs,weight,storageTemperature,notes,status
+ART-001,Weckchen 60g,50,0.35,3.0,-18°C,Individually wrapped,ACTIVE
+ART-002,Roggenbrot 500g,12,1.80,6.0,-18°C,,ACTIVE
+ART-003,Brezeln tiefgekühlt,24,0.65,4.8,-18°C,Pre-baked,ACTIVE
+ART-004,Dinkelbrötchen,40,0.45,2.0,-18°C,,ACTIVE
+ART-005,Croissant Butter,20,0.90,2.4,-18°C,Butter-Croissant,INACTIVE

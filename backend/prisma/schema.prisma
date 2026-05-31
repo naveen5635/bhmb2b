@@ -1,0 +1,170 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  username  String    @unique
+  password  String
+  role      Role      @default(STAFF)
+  name      String
+  email     String?
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  auditLogs AuditLog[]
+}
+
+model Customer {
+  id             String    @id @default(cuid())
+  customerNumber String    @unique
+  orgName        String
+  contactPerson  String?
+  address        String?
+  city           String?
+  postalCode     String?
+  country        String?
+  phone          String?
+  email          String?
+  taxNumber      String?
+  notes          String?
+  isDeleted      Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deletedAt      DateTime?
+  orders         Order[]
+  auditLogs      AuditLog[]
+
+  @@index([customerNumber])
+  @@index([orgName])
+  @@index([isDeleted])
+}
+
+model Article {
+  id                 String        @id @default(cuid())
+  articleNumber      String        @unique
+  name               String
+  pcsPerCarton       Int
+  pricePerPcs        Float?
+  weight             Float?
+  storageTemperature String?
+  notes              String?
+  status             ArticleStatus @default(ACTIVE)
+  isDeleted          Boolean       @default(false)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  deletedAt          DateTime?
+  orderItems         OrderItem[]
+  auditLogs          AuditLog[]
+
+  @@index([articleNumber])
+  @@index([status])
+  @@index([isDeleted])
+}
+
+model Order {
+  id          String      @id @default(cuid())
+  orderNumber String      @unique
+  customerId  String
+  customer    Customer    @relation(fields: [customerId], references: [id])
+  orderDate   DateTime    @default(now())
+  pickupDate  DateTime?
+  pickupTime  String?
+  status      OrderStatus @default(PENDING)
+  notes       String?
+  isDeleted   Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  deletedAt   DateTime?
+  items       OrderItem[]
+  labels      Label[]
+  auditLogs   AuditLog[]
+
+  @@index([orderNumber])
+  @@index([status])
+  @@index([customerId])
+  @@index([pickupDate])
+  @@index([orderDate])
+  @@index([isDeleted])
+}
+
+model OrderItem {
+  id           String   @id @default(cuid())
+  orderId      String
+  order        Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  articleId    String
+  article      Article  @relation(fields: [articleId], references: [id])
+  quantity     Int
+  pcsPerCarton Int
+  totalCartons Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([orderId])
+  @@index([articleId])
+}
+
+model Label {
+  id        String    @id @default(cuid())
+  orderId   String
+  order     Order     @relation(fields: [orderId], references: [id])
+  pdfPath   String?
+  size      LabelSize @default(A6)
+  createdAt DateTime  @default(now())
+
+  @@index([orderId])
+}
+
+model AuditLog {
+  id         String    @id @default(cuid())
+  entityType String
+  entityId   String
+  action     String
+  userId     String?
+  user       User?     @relation(fields: [userId], references: [id])
+  customerId String?
+  customer   Customer? @relation(fields: [customerId], references: [id])
+  articleId  String?
+  article    Article?  @relation(fields: [articleId], references: [id])
+  orderId    String?
+  order      Order?    @relation(fields: [orderId], references: [id])
+  changes    Json?
+  createdAt  DateTime  @default(now())
+
+  @@index([entityType, entityId])
+  @@index([userId])
+  @@index([orderId])
+}
+
+enum Role {
+  ADMIN
+  STAFF
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  READY_FOR_PICKUP
+  PICKED_UP
+  CANCELLED
+}
+
+enum ArticleStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum LabelSize {
+  A6
+  THERMAL_4X6
+  A4_HALF
+  A4_QUARTER
+}

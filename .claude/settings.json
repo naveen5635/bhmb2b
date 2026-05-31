@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "PowerShell(cd \"d:\\\\bhm\\\\b2b\\\\backend\"; $proc = Start-Process -FilePath \"npx\" -ArgumentList \"ts-node\",\"--transpile-only\",\"src/server.ts\" -PassThru -RedirectStandardOutput \"$env:TEMP\\\\backend_out.txt\" -RedirectStandardError \"$env:TEMP\\\\backend_err.txt\" -NoNewWindow; Start-Sleep -Seconds 8; Get-Content \"$env:TEMP\\\\backend_out.txt\",\"$env:TEMP\\\\backend_err.txt\" -ErrorAction SilentlyContinue; Stop-Process -Id $proc.Id -ErrorAction SilentlyContinue)",
+      "PowerShell(cd \"d:\\\\bhm\\\\b2b\\\\backend\"; $env:NODE_ENV=\"development\"; npx ts-node --transpile-only src/server.ts 2>&1 | Select-Object -First 5)",
+      "PowerShell(Invoke-WebRequest -Uri \"http://localhost:3001/health\" -UseBasicParsing -TimeoutSec 5 2>&1)",
+      "PowerShell(New-Item -ItemType Directory -Force -Path \"d:\\\\bhm\\\\b2b\\\\backend\\\\assets\")",
+      "PowerShell(Get-Process -Name \"node\" -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue; Start-Sleep -Seconds 1; cd \"d:\\\\bhm\\\\b2b\\\\backend\"; Start-Process -FilePath \"cmd.exe\" -ArgumentList \"/c npx ts-node-dev --transpile-only src/server.ts > $env:TEMP\\\\bhm_backend.log 2>&1\" -NoNewWindow -PassThru | Out-Null; Start-Sleep -Seconds 7; Get-Content \"$env:TEMP\\\\bhm_backend.log\")"
+    ]
+  }
+}

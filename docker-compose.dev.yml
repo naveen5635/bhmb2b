@@ -1,0 +1,31 @@
+# Development docker-compose — database is hosted on Supabase (no local postgres needed).
+# Use this only if you want to run the backend in a container during development.
+# For most dev workflows, run the backend and frontend with `npm run dev` directly.
+#
+# Prerequisites:
+#   1. Fill in backend/.env with your real Supabase DATABASE_URL and DIRECT_URL
+#   2. docker-compose -f docker-compose.dev.yml up
+
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: b2b_backend_dev
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      PORT: 3001
+      NODE_ENV: development
+      FRONTEND_URL: http://localhost:5173
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend/src:/app/src  # mount src for easier debugging
+
+networks:
+  default:
+    name: b2b_network_dev
