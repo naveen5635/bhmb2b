@@ -13,7 +13,10 @@
       "Bash(git commit -m 'Add render.yaml for backend deployment config *)",
       "Bash(git commit -m 'Fix Render deployment: use Node runtime + prisma db push *)",
       "Bash(git commit -m 'Fix Render build: node version, skip tsc, use ts-node directly *)",
-      "Bash(git commit -m 'Fix: add LabelsPage to git \\(was excluded by labels/ gitignore rule\\) *)"
+      "Bash(git commit -m 'Fix: add LabelsPage to git \\(was excluded by labels/ gitignore rule\\) *)",
+      "Bash(git commit -m 'Render: compile TS during build, run compiled JS at start *)",
+      "Bash(git commit -m 'Fix Dockerfile: install OpenSSL for Alpine + remove prisma db push *)",
+      "PowerShell(node -e \"console.log\\(require\\('crypto'\\).randomBytes\\(48\\).toString\\('hex'\\)\\)\")"
     ]
   }
 }
