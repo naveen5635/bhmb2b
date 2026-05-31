@@ -2,7 +2,10 @@
   "name": "b2b-frozen-goods-backend",
   "version": "1.0.0",
   "description": "B2B Frozen Goods Order Monitoring System - Backend",
-  "main": "src/server.js",
+  "main": "dist/server.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",

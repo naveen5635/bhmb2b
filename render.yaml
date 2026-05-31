@@ -3,8 +3,8 @@ services:
     name: bhm-b2b-backend
     runtime: node
     rootDir: backend
-    buildCommand: npm install && npx prisma generate && npm run build
-    startCommand: npx prisma db push --accept-data-loss && node dist/server.js
+    buildCommand: npm install && npx prisma generate
+    startCommand: npx prisma db push --accept-data-loss && node -r ts-node/register src/server.ts
     plan: free
     envVars:
       - key: DATABASE_URL
@@ -19,3 +19,5 @@ services:
         value: production
       - key: FRONTEND_URL
         sync: false
+      - key: TS_NODE_TRANSPILE_ONLY
+        value: "true"
