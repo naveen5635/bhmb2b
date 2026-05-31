@@ -60,6 +60,6 @@ coverage/
 # TypeScript
 *.tsbuildinfo
 
-# Uploads
+# Uploads / runtime output (backend only)
 uploads/
-labels/
+backend/labels/
