@@ -1,9 +1,10 @@
 services:
   - type: web
     name: bhm-b2b-backend
-    env: docker
-    dockerfilePath: ./backend/Dockerfile
-    dockerContext: ./backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npx prisma db push --accept-data-loss && node dist/server.js
     plan: free
     envVars:
       - key: DATABASE_URL
@@ -16,7 +17,5 @@ services:
         value: 24h
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: 10000
       - key: FRONTEND_URL
         sync: false
